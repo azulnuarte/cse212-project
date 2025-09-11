@@ -8,12 +8,19 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan (steps):
+        // 1. Create a double array of size 'length'.
+        // 2. Loop through indices from 0 up to length-1.
+        // 3. At position i, store number * (i + 1) 
+        //    (because the first multiple is number * 1, not number * 0).
+        // 4. Return the filled array.
 
-        return []; // replace this return statement with your own
+        var result = new double[length];
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+        return result;
     }
 
     /// <summary>
@@ -25,9 +32,24 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan (steps):
+        // 1. If the list is null or has 0/1 elements, do nothing.
+        // 2. Normalize amount using amount = amount % data.Count 
+        //    (this also handles the case amount == data.Count).
+        // 3. If amount == 0 after normalization, do nothing.
+        // 4. Take the last 'amount' elements using GetRange(start, amount).
+        // 5. Remove those elements from the end using RemoveRange(start, amount).
+        // 6. Insert the saved slice at the beginning using InsertRange(0, tail).
+
+        if (data == null || data.Count <= 1) return;
+
+        int n = data.Count;
+        amount = amount % n;
+        if (amount == 0) return;
+
+        int start = n - amount;
+        var tail = data.GetRange(start, amount);
+        data.RemoveRange(start, amount);
+        data.InsertRange(0, tail);
     }
 }
