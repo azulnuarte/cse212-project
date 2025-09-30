@@ -20,10 +20,31 @@ public static class SetsAndMaps
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
+
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        
+
+    var set = new HashSet<string>(words);
+    var result = new List<string>();
+
+    foreach (var word in words)
+    {
+        if (word[0] == word[1]) continue; // ignorar aa, bb...
+        var reversed = new string(new[] { word[1], word[0] });
+
+        if (set.Contains(reversed))
+        {
+            result.Add($"{word} & {reversed}");
+            set.Remove(word);
+            set.Remove(reversed);
+        }
     }
+
+    return result.ToArray();
+}
+
+     
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -43,6 +64,14 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+             if (fields.Length < 4) continue;
+
+        var degree = fields[3].Trim();
+        if (degrees.ContainsKey(degree))
+            degrees[degree]++;
+        else
+            degrees[degree] = 1;
+    
         }
 
         return degrees;
@@ -67,6 +96,28 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
+        string Clean(string s) =>
+        new string(s.ToLower().Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+    var w1 = Clean(word1);
+    var w2 = Clean(word2);
+
+    if (w1.Length != w2.Length) return false;
+
+    var dict = new Dictionary<char, int>();
+
+    foreach (var c in w1)
+    {
+        if (!dict.ContainsKey(c)) dict[c] = 0;
+        dict[c]++;
+    }
+
+    foreach (var c in w2)
+    {
+        if (!dict.ContainsKey(c)) return false;
+        dict[c]--;
+        if (dict[c] == 0) dict.Remove(c);
+    }
         return false;
     }
 
